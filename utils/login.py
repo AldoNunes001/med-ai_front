@@ -10,9 +10,6 @@ def make_login(username, password):
 
 
 def validate_data(page, username, password, error_message):
-    # nome_textfield = nome.controls[1]
-    print("teste")
-    # username_textfield = username.content.controls[0]
     username_textfield = username.content
     password_textfield = password.content
     
@@ -37,18 +34,11 @@ def validate_data(page, username, password, error_message):
     if username_error or password_error:
         return
 
-    print(username_value, password_value)
     user = make_login(username_value, password_value)
 
     if user.get("is_authenticated"):
-        print("Usuário autenticado")
-        home_view(page)  # Chamar a home_view diretamente se autenticado
+        home_view(page)  
     else:
         error_message.value = "Usuário ou senha inválidos."
         error_message.visible = True
         page.update()
-        print("Falha na autenticação do usuário")
-
-        
-        
-        

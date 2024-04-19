@@ -5,7 +5,6 @@ def home_view(page: ft.Page):
     # page.window_always_on_top = True
     page.controls.clear()
     
-    
     def open_close_side_bar(e):
         side_bar.width = 45 if side_bar.width == 200 else 200
         side_bar.update()
@@ -45,8 +44,3 @@ def home_view(page: ft.Page):
     )
 
     page.add(layout)
-    # return layout
-
-
-# if __name__ == "__main__":
-#     ft.app(target=get_home)
