@@ -1,5 +1,5 @@
 import flet as ft
-from utils.login import validate_data
+from utils.login import validate_data_login
 
 
 def login_view(page: ft.Page):
@@ -56,7 +56,7 @@ def login_view(page: ft.Page):
             ),
             height=47,
             width=316,
-            on_click=lambda e: validate_data(page, username, password, error_message),
+            on_click=lambda e: validate_data_login(page, username, password, error_message),
         ),
         margin=ft.margin.only(top=20),
     )

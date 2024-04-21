@@ -3,13 +3,13 @@ from views.home import home_view
 
 
 def make_login(username, password):
-    user = requests.post("http://127.0.0.1:8000/api/teste",
+    user = requests.post("http://127.0.0.1:8000/api/login",
                          json={"username": username, "password": password}).json()
 
     return user
 
 
-def validate_data(page, username, password, error_message):
+def validate_data_login(page, username, password, error_message):
     username_textfield = username.content
     password_textfield = password.content
     
@@ -36,8 +36,13 @@ def validate_data(page, username, password, error_message):
 
     user = make_login(username_value, password_value)
 
-    if user.get("is_authenticated"):
-        home_view(page)  
+    if user.get("token"):
+        page.client_storage.set("token", user["token"])
+        # print(user["token"])
+        # uuser = page.client_storage.get("token")
+        # print(uuser)
+        # print(page.client_storage.get("secret"))
+        home_view(page)
     else:
         error_message.value = "Usuário ou senha inválidos."
         error_message.visible = True
