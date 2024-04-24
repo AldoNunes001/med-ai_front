@@ -45,24 +45,28 @@ def home_view(page: ft.Page):
                 ),
                 ft.Row(
                     controls=[
-                        ft.Icon(name=ft.icons.SEARCH, color=ft.colors.WHITE, size=24),
-                        ft.TextField(
+                        # ft.Icon(name=ft.icons.SEARCH, color=ft.colors.WHITE, size=24),
+                        tf_search_cpf := ft.TextField(
                             keyboard_type=ft.KeyboardType.NUMBER,
                             bgcolor=ft.colors.WHITE54,
                             # border=ft.InputBorder.NONE,
                             border_color=ft.colors.GREY_600,
                             border_radius=50,
-                            height=35,
+                            height=55,
                             focused_border_width=1,
                             focused_border_color=ft.colors.BLUE,
-                            width=200,
+                            width=250,
                             text_size=14,
                             text_vertical_align=ft.VerticalAlignment.START,
                             text_align=ft.TextAlign.CENTER,
+                            input_filter=ft.NumbersOnlyInputFilter(),
+                            max_length=11,
+                            icon=ft.icons.SEARCH,
                             ),
                     ],
                     spacing=20,
                     vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                    # alignment=ft.MainAxisAlignment.CENTER,
                 ),
                 ft.Row(
                     controls=[
@@ -79,7 +83,7 @@ def home_view(page: ft.Page):
                             # ft.Icon(name=ft.icons.SEARCH, color=ft.colors.GREY_600, size=6),
                             ft.ElevatedButton(
                                 text="Buscar",
-                                on_click=lambda e: get_patient_data(page, menu_sidebar),
+                                on_click=lambda e: get_patient_data(page, menu_sidebar, tf_search_cpf),
                                 ),
                         ],
                         spacing=20,

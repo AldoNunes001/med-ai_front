@@ -1,8 +1,13 @@
 import requests
 
 
-def get_patient_data(page, menu_sidebar):
-    cpf = menu_sidebar.content.controls[1].controls[1].value
+def get_patient_data(page, menu_sidebar, tf_search_cpf):
+    # cpf = menu_sidebar.content.controls[1].controls[1].value
+    cpf = tf_search_cpf.value
+
+    temp = page.get_control("layout")
+    print(temp)
+
     token = page.client_storage.get("token")
     # print(token)
     headers = {"Authorization": f"Bearer {token}"}
