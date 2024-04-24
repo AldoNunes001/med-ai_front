@@ -31,6 +31,61 @@ def home_view(page: ft.Page):
     #         side_bar.content.controls[1].visible = True
             
     #     side_bar.update()
+
+    patient_info = ft.Container(
+        content=ft.Column(
+            controls=[
+                ft.Row(
+                    controls=[
+                       ft.Text("Nome: ", size=20, color=ft.colors.BLUE, weight=ft.FontWeight.W_600), 
+                       tf_patient_name := ft.TextField(
+                           bgcolor=ft.colors.WHITE,
+                           border_radius=50,
+                           border_color=ft.colors.WHITE,
+                           focused_border_color=ft.colors.BLUE,
+                           height=40,
+                           width=500,
+                           text_size=16,
+                           color=ft.colors.BLACK,
+                           text_vertical_align=ft.VerticalAlignment.START,
+                        #    col=8,
+                       ),
+                       ft.Text("            CPF: ", size=20, color=ft.colors.BLUE, weight=ft.FontWeight.W_600), 
+                       tf_patient_cpf := ft.TextField(
+                           bgcolor=ft.colors.WHITE,
+                           border_radius=50,
+                           border_color=ft.colors.WHITE,
+                           focused_border_color=ft.colors.BLUE,
+                           height=40,
+                           width=200,
+                           text_size=16,
+                           color=ft.colors.BLACK,
+                           text_vertical_align=ft.VerticalAlignment.START,
+                        #    col=3
+                       ),
+                    #    ft.Text("            Sexo: ", size=20, color=ft.colors.BLUE, weight=ft.FontWeight.W_600), 
+                    #    ft.TextField(
+                    #        bgcolor=ft.colors.WHITE,
+                    #        border_radius=50,
+                    #        border_color=ft.colors.WHITE,
+                    #        focused_border_color=ft.colors.BLUE,
+                    #        height=40,
+                    #        width=70,
+                    #        text_size=16,
+                    #        color=ft.colors.BLACK,
+                    #        text_vertical_align=ft.VerticalAlignment.START,
+                    #     #    col=3
+                    #    ),
+                    ],
+                    wrap=True,
+                )
+            ],
+        ),
+        margin=40,
+        visible=False,
+    )
+    
+    
     
     menu_sidebar = ft.Container(
         content=ft.Column(
@@ -72,7 +127,8 @@ def home_view(page: ft.Page):
                     controls=[
                         ft.Icon(name=ft.icons.SEARCH, color=ft.colors.GREY_600, size=24),
                         # ft.Text("    Digite o CPF do paciente"),
-                        ft.Text("     Paciente não encontrado", color=ft.colors.RED, visible=False, text_align="center")
+                        # ft.Text("     Paciente não encontrado", color=ft.colors.RED, visible=False, text_align="center")
+                        error_msg_search := ft.Text("", color=ft.colors.RED, text_align="center")
                     ],
                     spacing=20,
                     # vertical_alignment=ft.CrossAxisAlignment.CENTER,
@@ -83,7 +139,15 @@ def home_view(page: ft.Page):
                             # ft.Icon(name=ft.icons.SEARCH, color=ft.colors.GREY_600, size=6),
                             ft.ElevatedButton(
                                 text="Buscar",
-                                on_click=lambda e: get_patient_data(page, menu_sidebar, tf_search_cpf),
+                                on_click=lambda e: get_patient_data(
+                                    page,
+                                    menu_sidebar,
+                                    tf_search_cpf,
+                                    tf_patient_name,
+                                    tf_patient_cpf,
+                                    error_msg_search,
+                                    patient_info,
+                                    ),
                                 ),
                         ],
                         spacing=20,
@@ -122,57 +186,7 @@ def home_view(page: ft.Page):
         animate=ft.animation.Animation(100, ft.AnimationCurve.EASE),
     )
     
-    patient_info = ft.Container(
-        content=ft.Column(
-            controls=[
-                ft.Row(
-                    controls=[
-                       ft.Text("Nome: ", size=20, color=ft.colors.BLUE, weight=ft.FontWeight.W_600), 
-                       ft.TextField(
-                           bgcolor=ft.colors.WHITE,
-                           border_radius=50,
-                           border_color=ft.colors.WHITE,
-                           focused_border_color=ft.colors.BLUE,
-                           height=40,
-                           width=500,
-                           text_size=16,
-                           color=ft.colors.BLACK,
-                           text_vertical_align=ft.VerticalAlignment.START,
-                        #    col=8,
-                       ),
-                       ft.Text("            CPF: ", size=20, color=ft.colors.BLUE, weight=ft.FontWeight.W_600), 
-                       ft.TextField(
-                           bgcolor=ft.colors.WHITE,
-                           border_radius=50,
-                           border_color=ft.colors.WHITE,
-                           focused_border_color=ft.colors.BLUE,
-                           height=40,
-                           width=200,
-                           text_size=16,
-                           color=ft.colors.BLACK,
-                           text_vertical_align=ft.VerticalAlignment.START,
-                        #    col=3
-                       ),
-                       ft.Text("            Sexo: ", size=20, color=ft.colors.BLUE, weight=ft.FontWeight.W_600), 
-                       ft.TextField(
-                           bgcolor=ft.colors.WHITE,
-                           border_radius=50,
-                           border_color=ft.colors.WHITE,
-                           focused_border_color=ft.colors.BLUE,
-                           height=40,
-                           width=70,
-                           text_size=16,
-                           color=ft.colors.BLACK,
-                           text_vertical_align=ft.VerticalAlignment.START,
-                        #    col=3
-                       ),
-                    ],
-                    wrap=True,
-                )
-            ],
-        ),
-        margin=40
-    )
+    
     principal = ft.Container(
         ft.Column(
             controls=[

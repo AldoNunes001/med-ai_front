@@ -3,7 +3,7 @@ from views.home import home_view
 
 
 def make_login(username, password):
-    user = requests.post("http://127.0.0.1:8000/api/token/pair",
+    user = requests.post("http://127.0.0.1:8000/api/login",
                          json={"username": username, "password": password}).json()
 
     return user
@@ -36,9 +36,8 @@ def validate_data_login(page, username, password, error_message):
 
     user = make_login(username_value, password_value)
 
-    if user.get("access") and user.get("refresh"):
-        page.client_storage.set("access_token", user["access"])
-        page.client_storage.set("refresh_token", user["refresh"])
+    if user.get("token"):
+        page.client_storage.set("token", user["token"])
         # print(user["token"])
         # uuser = page.client_storage.get("token")
         # print(uuser)
