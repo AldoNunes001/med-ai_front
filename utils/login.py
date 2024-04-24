@@ -39,6 +39,7 @@ def validate_data_login(page, username, password, error_message):
     if user.get("access") and user.get("refresh"):
         page.client_storage.set("access_token", user["access"])
         page.client_storage.set("refresh_token", user["refresh"])
+        page.client_storage.set("username", user["username"])
         # print(user["token"])
         # uuser = page.client_storage.get("token")
         # print(uuser)

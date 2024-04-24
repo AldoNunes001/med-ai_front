@@ -2,7 +2,7 @@ import requests
 import flet as ft
 
 
-def list_patients(page, list_patients_info, patient_info):
+def list_patients(page, list_patients_info, patient_info, error_msg_search):
     token = page.client_storage.get("access_token")
     headers = {"Authorization": f"Bearer {token}"}
     url = f"http://127.0.0.1:8000/api/patients/"
@@ -25,6 +25,7 @@ def list_patients(page, list_patients_info, patient_info):
         # print(list_patients_info.content.controls[3].value)
         list_patients_info.visible = True
         patient_info.visible = False
+        error_msg_search.value = ""
         page.update()
         
     except:
@@ -69,3 +70,77 @@ def get_patient_data(page, menu_sidebar, tf_search_cpf, tf_patient_name, tf_pati
         page.update()
     # page.controls[0].content.controls[1].content.controls[2].content.controls[3].value = patient_data["cpf"]
     # return user
+
+
+def add_patient(page, tf_patient_name, tf_patient_cpf, error_msg_search, patient_info, list_patients_info):
+
+    tf_patient_name.value = ""
+    tf_patient_cpf.value = ""
+    error_msg_search.value = ""
+    patient_info.visible = True
+    list_patients_info.visible = False
+    page.update()
+    
+
+def save_patient(page, patient_name, patient_cpf):
+
+    username = page.client_storage.get("username")
+    token = page.client_storage.get("access_token")
+    headers = {"Authorization": f"Bearer {token}"}
+    url = f"http://127.0.0.1:8000/api/patients/"
+    
+    patient = requests.post(url, headers=headers,
+                            json={"name": patient_name, "cpf": patient_cpf, "username": username}).json()
+    
+    return patient
+
+
+def close_dlg(page, dlg):
+    dlg.open = False
+    page.update()
+        
+
+def validate_data_patient(page, tf_patient_name, tf_patient_cpf):
+    
+    name_error = ""
+    cpf_error = ""
+    
+    if not tf_patient_name.value:
+        name_error = "Por favor, digite o nome do paciente."
+    
+    if not tf_patient_cpf.value:
+        cpf_error = "Por favor, digite o CPF do paciente."
+    
+    tf_patient_name.error_text = name_error
+    tf_patient_cpf.error_text = cpf_error
+    
+    tf_patient_name.update()
+    tf_patient_cpf.update()
+
+    if name_error or cpf_error:
+        return
+
+    patient = save_patient(page, tf_patient_name.value, tf_patient_cpf.value)
+
+    if patient is not None:
+        dlg = ft.AlertDialog(
+            modal=True,
+            title=ft.Text("Paciente salvo com sucesso."),
+            actions=[
+                ft.TextButton("Ok", on_click=lambda e: close_dlg(page, dlg))
+            ],
+            actions_alignment=ft.MainAxisAlignment.CENTER,
+        )
+        page.dialog = dlg
+        dlg.open = True
+        page.update()
+        # print("Paciente salvo com sucesso.")
+    else:
+        dlg = ft.AlertDialog(
+            title=ft.Text("Paciente salvo com sucesso."), on_dismiss=lambda e: print("Dialog dismissed!")
+        )
+        page.dialog = dlg
+        dlg.open = True
+        page.update()
+        # print("Problema ao salvar paciente.")
+        # page.update()

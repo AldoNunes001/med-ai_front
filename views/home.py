@@ -1,6 +1,6 @@
 import flet as ft
 from utils.animations import open_close_sidebar
-from utils.patient import get_patient_data, list_patients
+from utils.patient import add_patient, get_patient_data, list_patients, validate_data_patient
 
 # BLUE = "#B6CCFE"
 
@@ -43,11 +43,12 @@ def home_view(page: ft.Page):
                            border_radius=50,
                            border_color=ft.colors.WHITE,
                            focused_border_color=ft.colors.BLUE,
-                           height=40,
+                           height=55,
                            width=500,
                            text_size=16,
                            color=ft.colors.BLACK,
                            text_vertical_align=ft.VerticalAlignment.START,
+                           max_length=100,
                         #    col=8,
                        ),
                        ft.Text("            CPF: ", size=20, color=ft.colors.BLUE, weight=ft.FontWeight.W_600), 
@@ -56,11 +57,13 @@ def home_view(page: ft.Page):
                            border_radius=50,
                            border_color=ft.colors.WHITE,
                            focused_border_color=ft.colors.BLUE,
-                           height=40,
+                           height=55,
                            width=200,
                            text_size=16,
                            color=ft.colors.BLACK,
                            text_vertical_align=ft.VerticalAlignment.START,
+                           input_filter=ft.NumbersOnlyInputFilter(),
+                           max_length=11,
                         #    col=3
                        ),
                     #    ft.Text("            Sexo: ", size=20, color=ft.colors.BLUE, weight=ft.FontWeight.W_600), 
@@ -76,8 +79,27 @@ def home_view(page: ft.Page):
                     #        text_vertical_align=ft.VerticalAlignment.START,
                     #     #    col=3
                     #    ),
+                    
                     ],
                     wrap=True,
+                    vertical_alignment=ft.CrossAxisAlignment.START,
+                ),
+                ft.Container(
+                    ft.Row(
+                        controls=[
+                            ft.ElevatedButton(
+                                text="Salvar",
+                                on_click=lambda e: validate_data_patient(
+                                    page,
+                                    tf_patient_name=tf_patient_name,
+                                    tf_patient_cpf=tf_patient_cpf,
+                                    ),
+                            ),
+                        ],
+                        alignment=ft.MainAxisAlignment.CENTER,
+                    ),
+                    alignment=ft.alignment.center,
+                    margin=ft.margin.only(top=80),
                 )
             ],
         ),
@@ -166,26 +188,65 @@ def home_view(page: ft.Page):
                 ft.Container(
                     ft.Row(
                         controls=[
-                            # ft.Icon(name=ft.icons.ALL_OUT_ROUNDED, color=ft.colors.GREY_300, size=24),
+                            ft.Icon(name=ft.icons.LIST, color=ft.colors.GREY_300, size=24),
                             # ft.Text("   "),
-                            ft.ElevatedButton(
-                                # text="Listar Pacientes",
-                                content=ft.Text("Listar Pacientes", color=ft.colors.BLUE, size=16, weight=ft.FontWeight.W_600),
-                                on_click=lambda e: list_patients(
-                                    page,
-                                    list_patients_info=list_patients_info,
-                                    patient_info=patient_info,
+                            ft.Container(
+                                ft.ElevatedButton(
+                                    # text="Listar Pacientes",
+                                    content=ft.Text("Listar Pacientes", color=ft.colors.BLUE, size=16, weight=ft.FontWeight.W_600),
+                                    on_click=lambda e: list_patients(
+                                        page,
+                                        list_patients_info=list_patients_info,
+                                        patient_info=patient_info,
+                                        error_msg_search=error_msg_search,
+                                        ),
+                                    style=ft.ButtonStyle(
+                                        bgcolor=ft.colors.GREY_300,
+                                        
+                                        ),
                                     ),
-                                style=ft.ButtonStyle(
-                                    bgcolor=ft.colors.GREY_300,
-                                    
-                                    ),
-                                ),
+                                alignment=ft.alignment.center,
+                                # bgcolor=ft.colors.PINK,
+                                padding=ft.padding.only(left=17),
+                            )
                         ],
                         spacing=20,
-                        alignment=ft.MainAxisAlignment.CENTER,
+                        # alignment=ft.MainAxisAlignment.CENTER,
                     ),
-                    margin=ft.margin.only(top=45, left=10),
+                    margin=ft.margin.only(top=45, left=0),
+                    # bgcolor=ft.colors.PINK,
+                ),
+                ft.Container(
+                    ft.Row(
+                        controls=[
+                            ft.Icon(name=ft.icons.ADD, color=ft.colors.GREY_300, size=24),
+                            # ft.Text("   "),
+                            ft.Container(
+                                ft.ElevatedButton(
+                                    # text="Listar Pacientes",
+                                    content=ft.Text("Cadastrar Paciente", color=ft.colors.BLUE, size=16, weight=ft.FontWeight.W_600),
+                                    on_click=lambda e: add_patient(
+                                        page,
+                                        tf_patient_name=tf_patient_name,
+                                        tf_patient_cpf=tf_patient_cpf,
+                                        error_msg_search=error_msg_search,
+                                        patient_info=patient_info,
+                                        list_patients_info=list_patients_info,
+                                    ),
+                                    style=ft.ButtonStyle(
+                                        bgcolor=ft.colors.GREY_300,
+                                        
+                                        ),
+                                    ),
+                                alignment=ft.alignment.center,
+                                # bgcolor=ft.colors.PINK,
+                                padding=ft.padding.only(left=7),
+                            )
+                        ],
+                        spacing=20,
+                        # alignment=ft.MainAxisAlignment.CENTER,
+                    ),
+                    margin=ft.margin.only(top=45, left=0),
                     # bgcolor=ft.colors.PINK,
                 ),
             ],
