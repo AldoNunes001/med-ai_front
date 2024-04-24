@@ -1,6 +1,6 @@
 import flet as ft
 from utils.animations import open_close_sidebar
-from utils.patient import get_patient_data
+from utils.patient import get_patient_data, list_patients
 
 # BLUE = "#B6CCFE"
 
@@ -84,6 +84,11 @@ def home_view(page: ft.Page):
         margin=40,
         visible=False,
     )
+
+    
+    list_patients_info = ft.Container(
+        content=ft.Column(),
+    )
     
     
     
@@ -141,12 +146,13 @@ def home_view(page: ft.Page):
                                 text="Buscar",
                                 on_click=lambda e: get_patient_data(
                                     page,
-                                    menu_sidebar,
-                                    tf_search_cpf,
-                                    tf_patient_name,
-                                    tf_patient_cpf,
-                                    error_msg_search,
-                                    patient_info,
+                                    menu_sidebar=menu_sidebar,
+                                    tf_search_cpf=tf_search_cpf,
+                                    tf_patient_name=tf_patient_name,
+                                    tf_patient_cpf=tf_patient_cpf,
+                                    error_msg_search=error_msg_search,
+                                    patient_info=patient_info,
+                                    list_patients_info=list_patients_info,
                                     ),
                                 ),
                         ],
@@ -156,6 +162,31 @@ def home_view(page: ft.Page):
                     ),
                     padding=ft.padding.only(left=24),
                     margin=ft.margin.only(top=10),
+                ),
+                ft.Container(
+                    ft.Row(
+                        controls=[
+                            # ft.Icon(name=ft.icons.ALL_OUT_ROUNDED, color=ft.colors.GREY_300, size=24),
+                            # ft.Text("   "),
+                            ft.ElevatedButton(
+                                # text="Listar Pacientes",
+                                content=ft.Text("Listar Pacientes", color=ft.colors.BLUE, size=16, weight=ft.FontWeight.W_600),
+                                on_click=lambda e: list_patients(
+                                    page,
+                                    list_patients_info=list_patients_info,
+                                    patient_info=patient_info,
+                                    ),
+                                style=ft.ButtonStyle(
+                                    bgcolor=ft.colors.GREY_300,
+                                    
+                                    ),
+                                ),
+                        ],
+                        spacing=20,
+                        alignment=ft.MainAxisAlignment.CENTER,
+                    ),
+                    margin=ft.margin.only(top=45, left=10),
+                    # bgcolor=ft.colors.PINK,
                 ),
             ],
             spacing=0,
@@ -200,6 +231,7 @@ def home_view(page: ft.Page):
                 ),
                 ft.Divider(color=ft.colors.BLUE, thickness=0.5, height=2),
                 patient_info,
+                list_patients_info,
             ],
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
         ),
